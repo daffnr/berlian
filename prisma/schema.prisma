@@ -1,0 +1,148 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  STAFF
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum PickupStatus {
+  PENDING
+  VERIFIED
+  ASSIGNED
+  PICKED_UP
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id                String          @id @default(cuid())
+  name              String
+  email             String          @unique
+  password          String
+  phone             String?
+  address           String?
+  avatarUrl         String?
+  role              Role            @default(USER)
+  status            UserStatus      @default(ACTIVE)
+  balance           Float           @default(0)
+  points            Int             @default(0)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  pickupRequests    PickupRequest[] @relation("UserPickups")
+  assignedPickups   PickupRequest[] @relation("StaffPickups")
+  transactions      Transaction[]   @relation("UserTransactions")
+  staffTransactions Transaction[]   @relation("StaffTransactions")
+  activityLogs      ActivityLog[]
+
+  @@map("users")
+}
+
+model WasteType {
+  id             String          @id @default(cuid())
+  name           String          @unique
+  code           String          @unique // e.g. BOTOL_PLASTIK, GELAS_PLASTIK
+  description    String?
+  image          String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  prices         WastePrice[]
+  pickupRequests PickupRequest[]
+
+  @@map("waste_types")
+}
+
+model WastePrice {
+  id            String    @id @default(cuid())
+  wasteTypeId   String
+  wasteType     WasteType @relation(fields: [wasteTypeId], references: [id], onDelete: Cascade)
+  pricePerKg    Float
+  unit          String    @default("kg")
+  effectiveDate DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+
+  @@map("waste_prices")
+}
+
+model PickupRequest {
+  id              String       @id @default(cuid())
+  userId          String
+  user            User         @relation("UserPickups", fields: [userId], references: [id], onDelete: Cascade)
+  wasteTypeId     String
+  wasteType       WasteType    @relation(fields: [wasteTypeId], references: [id], onDelete: Cascade)
+  estimatedWeight Float
+  description     String?
+  status          PickupStatus @default(PENDING)
+  address         String
+  imageUrl        String?
+  latitude        Float?
+  longitude       Float?
+  staffId         String?
+  staff           User?        @relation("StaffPickups", fields: [staffId], references: [id], onDelete: SetNull)
+  verifiedAt      DateTime?
+  scheduledAt     DateTime?
+  completedAt     DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  transactions    Transaction[]
+
+  @@map("pickup_requests")
+}
+
+model Transaction {
+  id              String         @id @default(cuid())
+  pickupRequestId String?
+  pickupRequest   PickupRequest? @relation(fields: [pickupRequestId], references: [id], onDelete: SetNull)
+  userId          String
+  user            User           @relation("UserTransactions", fields: [userId], references: [id], onDelete: Cascade)
+  staffId         String
+  staff           User           @relation("StaffTransactions", fields: [staffId], references: [id], onDelete: Cascade)
+  weight          Float
+  pricePerKg      Float
+  totalPrice      Float
+  pointsEarned    Int
+  createdAt       DateTime       @default(now())
+
+  @@map("transactions")
+}
+
+model WasteLocation {
+  id        String   @id @default(cuid())
+  name      String
+  address   String
+  latitude  Float
+  longitude Float
+  phone     String?
+  email     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("waste_locations")
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  details   String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  @@map("activity_logs")
+}
