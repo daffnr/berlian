@@ -58,7 +58,7 @@ export function MapView({ locations }: MapViewProps) {
             placeholder="Cari lokasi bank sampah..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+            className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-gray-200 bg-gray-50 text-black dark:text-zinc-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all dark:border-zinc-700 dark:bg-zinc-800 dark:focus:bg-zinc-700"
           />
         </div>
 

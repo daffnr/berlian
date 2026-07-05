@@ -26,8 +26,8 @@ export default async function SuperAdminDashboardPage() {
   const totalWeight = transactions.reduce((acc: number, curr: any) => acc + curr.weight, 0);
   const totalPayout = transactions.reduce((acc: number, curr: any) => acc + curr.totalPrice, 0);
 
-  // Group 7 recent transactions for chart
-  const chartData = transactions.slice(0, 10).map((t: any) => {
+  // Group all transactions for cumulative chart
+  const chartData = transactions.map((t: any) => {
     const isBotol = (t.pickupRequest?.wasteType?.name || t.wasteTypeName || "").toLowerCase().includes("botol");
     return {
       date: t.createdAt.toISOString(),

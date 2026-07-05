@@ -43,8 +43,8 @@ export default async function UserDashboardPage() {
 
   const lvlInfo = getLevelInfo(user.points);
 
-  // Format data grafik untuk UserCharts
-  const chartPoints = transactions.slice(0, 7).map((t: any) => ({
+  // Format data grafik untuk UserCharts (semua untuk akumulasi)
+  const chartPoints = transactions.map((t: any) => ({
     date: t.createdAt.toISOString(),
     weight: t.weight,
   }));

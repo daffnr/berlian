@@ -66,8 +66,8 @@ async function main() {
       address: "Jl. Pemuda No. 12, Pancoran Mas, Depok",
       role: Role.USER,
       status: UserStatus.ACTIVE,
-      balance: 25000,
-      points: 250,
+      balance: 113100,
+      points: 1131,
     },
   });
 
@@ -146,23 +146,142 @@ async function main() {
       latitude: -6.375678,
       longitude: 106.831234,
       staffId: staff.id,
-      verifiedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 hari lalu
-      scheduledAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-      completedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+      verifiedAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+      scheduledAt: new Date(Date.now() - 29 * 24 * 60 * 60 * 1000),
+      completedAt: new Date(Date.now() - 29 * 24 * 60 * 60 * 1000),
     },
   });
 
-  // Buat transaksi untuk pickup pertama
   await prisma.transaction.create({
     data: {
       pickupRequestId: req1.id,
       userId: user.id,
       staffId: staff.id,
-      weight: 6.2, // berat aktual saat ditimbang staff
+      weight: 6.2,
       pricePerKg: 3000,
-      totalPrice: 18600, // 6.2 * 3000
+      totalPrice: 18600,
       pointsEarned: 186,
-      createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+      createdAt: new Date(Date.now() - 29 * 24 * 60 * 60 * 1000),
+    },
+  });
+
+  const req2 = await prisma.pickupRequest.create({
+    data: {
+      userId: user.id,
+      wasteTypeId: gelasPlastik.id,
+      estimatedWeight: 3.5,
+      description: "Sudah saya pilah dan ikat rapi.",
+      status: PickupStatus.COMPLETED,
+      address: user.address || "",
+      latitude: -6.375678,
+      longitude: 106.831234,
+      staffId: staff.id,
+      verifiedAt: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000),
+      scheduledAt: new Date(Date.now() - 24 * 24 * 60 * 60 * 1000),
+      completedAt: new Date(Date.now() - 24 * 24 * 60 * 60 * 1000),
+    },
+  });
+
+  await prisma.transaction.create({
+    data: {
+      pickupRequestId: req2.id,
+      userId: user.id,
+      staffId: staff.id,
+      weight: 4.0,
+      pricePerKg: 2000,
+      totalPrice: 8000,
+      pointsEarned: 80,
+      createdAt: new Date(Date.now() - 24 * 24 * 60 * 60 * 1000),
+    },
+  });
+
+  const req3 = await prisma.pickupRequest.create({
+    data: {
+      userId: user.id,
+      wasteTypeId: botolPlastik.id,
+      estimatedWeight: 10.0,
+      description: "Jemput di lobi depan rumah.",
+      status: PickupStatus.COMPLETED,
+      address: user.address || "",
+      latitude: -6.375678,
+      longitude: 106.831234,
+      staffId: staff.id,
+      verifiedAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000),
+      scheduledAt: new Date(Date.now() - 19 * 24 * 60 * 60 * 1000),
+      completedAt: new Date(Date.now() - 19 * 24 * 60 * 60 * 1000),
+    },
+  });
+
+  await prisma.transaction.create({
+    data: {
+      pickupRequestId: req3.id,
+      userId: user.id,
+      staffId: staff.id,
+      weight: 11.5,
+      pricePerKg: 3000,
+      totalPrice: 34500,
+      pointsEarned: 345,
+      createdAt: new Date(Date.now() - 19 * 24 * 60 * 60 * 1000),
+    },
+  });
+
+  const req4 = await prisma.pickupRequest.create({
+    data: {
+      userId: user.id,
+      wasteTypeId: gelasPlastik.id,
+      estimatedWeight: 6.0,
+      description: "Jemput depan gerbang.",
+      status: PickupStatus.COMPLETED,
+      address: user.address || "",
+      latitude: -6.375678,
+      longitude: 106.831234,
+      staffId: staff.id,
+      verifiedAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
+      scheduledAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000),
+      completedAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000),
+    },
+  });
+
+  await prisma.transaction.create({
+    data: {
+      pickupRequestId: req4.id,
+      userId: user.id,
+      staffId: staff.id,
+      weight: 6.5,
+      pricePerKg: 2000,
+      totalPrice: 13000,
+      pointsEarned: 130,
+      createdAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000),
+    },
+  });
+
+  const req5 = await prisma.pickupRequest.create({
+    data: {
+      userId: user.id,
+      wasteTypeId: botolPlastik.id,
+      estimatedWeight: 12.0,
+      description: "Botol-botol minuman bekas pesta.",
+      status: PickupStatus.COMPLETED,
+      address: user.address || "",
+      latitude: -6.375678,
+      longitude: 106.831234,
+      staffId: staff.id,
+      verifiedAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
+      scheduledAt: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000),
+      completedAt: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000),
+    },
+  });
+
+  await prisma.transaction.create({
+    data: {
+      pickupRequestId: req5.id,
+      userId: user.id,
+      staffId: staff.id,
+      weight: 13.0,
+      pricePerKg: 3000,
+      totalPrice: 39000,
+      pointsEarned: 390,
+      createdAt: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000),
     },
   });
 
@@ -171,15 +290,15 @@ async function main() {
     data: {
       userId: user.id,
       wasteTypeId: gelasPlastik.id,
-      estimatedWeight: 3.5,
-      description: "Sudah saya pilah dan ikat rapi.",
+      estimatedWeight: 4.5,
+      description: "Jemput besok pagi jam 9.",
       status: PickupStatus.ASSIGNED,
       address: user.address || "",
       latitude: -6.375678,
       longitude: 106.831234,
       staffId: staff.id,
-      verifiedAt: new Date(Date.now() - 12 * 60 * 60 * 1000), // 12 jam lalu
-      scheduledAt: new Date(Date.now() + 4 * 60 * 60 * 1000), // jadwal nanti
+      verifiedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+      scheduledAt: new Date(Date.now() + 4 * 60 * 60 * 1000),
     },
   });
 
@@ -188,8 +307,8 @@ async function main() {
     data: {
       userId: user.id,
       wasteTypeId: botolPlastik.id,
-      estimatedWeight: 10.0,
-      description: "Jemput di lobi depan rumah.",
+      estimatedWeight: 8.0,
+      description: "Jemput di garasi samping.",
       status: PickupStatus.PENDING,
       address: user.address || "",
       latitude: -6.375678,

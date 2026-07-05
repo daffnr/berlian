@@ -204,7 +204,7 @@ export function AdminsClient({ internalAccounts }: AdminsClientProps) {
               <label className="font-semibold text-slate-700 dark:text-zinc-300">Hak Akses (Role)</label>
               <select
                 {...register("role")}
-                className="w-full bg-white dark:bg-zinc-850 border border-slate-200 dark:border-zinc-700 rounded-xl px-3.5 py-2 focus:outline-none"
+                className="w-full bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-xl px-3.5 py-2 text-black dark:text-white focus:outline-none"
               >
                 <option value="STAFF">Staff Lapangan (Penjemput)</option>
                 <option value="ADMIN">Admin Cabang</option>
@@ -217,8 +217,8 @@ export function AdminsClient({ internalAccounts }: AdminsClientProps) {
                 type="text"
                 placeholder="Budi Setiawan"
                 {...register("name")}
-                className={`w-full bg-white dark:bg-zinc-800 border rounded-xl px-3.5 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white ${
-                  errors.name ? "border-rose-500" : "border-slate-200 dark:border-zinc-750"
+                className={`w-full bg-white dark:bg-zinc-800 border rounded-xl px-3.5 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-black dark:text-white ${
+                  errors.name ? "border-rose-500" : "border-slate-200 dark:border-zinc-700"
                 }`}
               />
               {errors.name && <span className="text-[10px] text-rose-500">{errors.name.message}</span>}
@@ -230,8 +230,8 @@ export function AdminsClient({ internalAccounts }: AdminsClientProps) {
                 type="email"
                 placeholder="budi@berlian.com"
                 {...register("email")}
-                className={`w-full bg-white dark:bg-zinc-800 border rounded-xl px-3.5 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white ${
-                  errors.email ? "border-rose-500" : "border-slate-200 dark:border-zinc-750"
+                className={`w-full bg-white dark:bg-zinc-800 border rounded-xl px-3.5 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-black dark:text-white ${
+                  errors.email ? "border-rose-500" : "border-slate-200 dark:border-zinc-700"
                 }`}
               />
               {errors.email && <span className="text-[10px] text-rose-500">{errors.email.message}</span>}
@@ -243,8 +243,8 @@ export function AdminsClient({ internalAccounts }: AdminsClientProps) {
                 type="text"
                 placeholder="0856xxxxxxxx"
                 {...register("phone")}
-                className={`w-full bg-white dark:bg-zinc-800 border rounded-xl px-3.5 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white ${
-                  errors.phone ? "border-rose-500" : "border-slate-200 dark:border-zinc-750"
+                className={`w-full bg-white dark:bg-zinc-800 border rounded-xl px-3.5 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-black dark:text-white ${
+                  errors.phone ? "border-rose-500" : "border-slate-200 dark:border-zinc-700"
                 }`}
               />
               {errors.phone && <span className="text-[10px] text-rose-500">{errors.phone.message}</span>}
@@ -256,8 +256,8 @@ export function AdminsClient({ internalAccounts }: AdminsClientProps) {
                 type="password"
                 placeholder="••••••"
                 {...register("password")}
-                className={`w-full bg-white dark:bg-zinc-800 border rounded-xl px-3.5 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white ${
-                  errors.password ? "border-rose-500" : "border-slate-200 dark:border-zinc-750"
+                className={`w-full bg-white dark:bg-zinc-800 border rounded-xl px-3.5 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-black dark:text-white ${
+                  errors.password ? "border-rose-500" : "border-slate-200 dark:border-zinc-700"
                 }`}
               />
               {errors.password && <span className="text-[10px] text-rose-500">{errors.password.message}</span>}

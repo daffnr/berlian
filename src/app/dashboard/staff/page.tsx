@@ -105,13 +105,23 @@ export default async function StaffDashboardPage() {
               {completedTasks.map((t: any) => (
                 <div
                   key={t.id}
-                  className="p-3 rounded-xl border border-slate-50 bg-slate-50/20 dark:border-zinc-850 dark:bg-zinc-900/10 text-xs flex justify-between items-center"
+                  className="p-4 rounded-xl border border-slate-50 bg-slate-50/20 dark:border-zinc-850 dark:bg-zinc-900/10 text-xs flex justify-between items-center"
                 >
                   <div className="flex flex-col gap-1">
                     <span className="font-bold">{t.user?.name || (t as any).userName}</span>
                     <span className="text-[10px] text-slate-500 dark:text-zinc-400">
                       {t.completedAt ? new Date(t.completedAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" }) : ""}
                     </span>
+                    <div className="flex flex-col gap-0.5 mt-1 text-[11px] text-slate-600 dark:text-zinc-400">
+                      <span>Sampah: <span className="font-semibold">{t.wasteType?.name || (t as any).wasteTypeName}</span></span>
+                      {t.transactions?.[0] ? (
+                        <span>
+                          ⚖️ Berat Aktual: <span className="font-bold text-emerald-600 dark:text-emerald-400">{t.transactions[0].weight} kg</span> (Estimasi: {t.estimatedWeight} kg)
+                        </span>
+                      ) : (
+                        <span>Estimasi: {t.estimatedWeight} kg</span>
+                      )}
+                    </div>
                   </div>
                   <div className="flex items-center gap-1.5 font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/50 rounded-lg px-2.5 py-1">
                     <CheckCircle2 className="h-4.5 w-4.5" />

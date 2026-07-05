@@ -213,22 +213,26 @@ export async function getTransactions() {
     },
     () => {
       // format dummy transaction data structure to match prisma query includes
-      return dummyActions.getTransactions().map((t) => ({
-        id: t.id,
-        pickupRequestId: t.pickupRequestId,
-        userId: t.userId,
-        staffId: t.staffId,
-        weight: t.weight,
-        pricePerKg: t.pricePerKg,
-        totalPrice: t.totalPrice,
-        pointsEarned: t.pointsEarned,
-        createdAt: t.createdAt,
-        user: { name: t.userName },
-        staff: { name: t.staffName },
-        pickupRequest: {
-          wasteType: { name: t.wasteTypeName },
-        },
-      }));
+      return dummyActions.getTransactions().map((t) => {
+        const associatedPickup = dummyActions.getPickups().find((p) => p.id === t.pickupRequestId);
+        return {
+          id: t.id,
+          pickupRequestId: t.pickupRequestId,
+          userId: t.userId,
+          staffId: t.staffId,
+          weight: t.weight,
+          pricePerKg: t.pricePerKg,
+          totalPrice: t.totalPrice,
+          pointsEarned: t.pointsEarned,
+          createdAt: t.createdAt,
+          user: { id: t.userId, name: t.userName },
+          staff: { name: t.staffName },
+          pickupRequest: {
+            wasteType: { name: t.wasteTypeName },
+            estimatedWeight: associatedPickup ? associatedPickup.estimatedWeight : t.weight * 0.9,
+          },
+        };
+      });
     }
   );
 }
@@ -239,6 +243,7 @@ export async function getTransactionsByUserId(userId: string) {
       return await db.transaction.findMany({
         where: { userId },
         include: {
+          user: true,
           staff: true,
           pickupRequest: {
             include: {
@@ -253,21 +258,26 @@ export async function getTransactionsByUserId(userId: string) {
       return dummyActions
         .getTransactions()
         .filter((t) => t.userId === userId)
-        .map((t) => ({
-          id: t.id,
-          pickupRequestId: t.pickupRequestId,
-          userId: t.userId,
-          staffId: t.staffId,
-          weight: t.weight,
-          pricePerKg: t.pricePerKg,
-          totalPrice: t.totalPrice,
-          pointsEarned: t.pointsEarned,
-          createdAt: t.createdAt,
-          staff: { name: t.staffName },
-          pickupRequest: {
-            wasteType: { name: t.wasteTypeName },
-          },
-        }));
+        .map((t) => {
+          const associatedPickup = dummyActions.getPickups().find((p) => p.id === t.pickupRequestId);
+          return {
+            id: t.id,
+            pickupRequestId: t.pickupRequestId,
+            userId: t.userId,
+            staffId: t.staffId,
+            weight: t.weight,
+            pricePerKg: t.pricePerKg,
+            totalPrice: t.totalPrice,
+            pointsEarned: t.pointsEarned,
+            createdAt: t.createdAt,
+            user: { id: t.userId, name: t.userName },
+            staff: { name: t.staffName },
+            pickupRequest: {
+              wasteType: { name: t.wasteTypeName },
+              estimatedWeight: associatedPickup ? associatedPickup.estimatedWeight : t.weight * 0.9,
+            },
+          };
+        });
     }
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 interface ChartDataPoint {
   date: string;
@@ -14,25 +14,36 @@ interface AdminChartsProps {
 }
 
 export function AdminCharts({ data }: AdminChartsProps) {
-  // Fallback data jika belum ada transaksi
-  const chartData = data.length > 0 
-    ? [...data].reverse().map(d => ({
-        date: new Date(d.date).toLocaleDateString("id-ID", { day: "numeric", month: "short" }),
-        "Botol Plastik (kg)": d.botolWeight,
-        "Gelas Plastik (kg)": d.gelasWeight,
-      }))
+  // Urutkan data secara kronologis (dari terlama ke terbaru) untuk menghitung akumulasi sum secara berurutan
+  const sortedData = data.length > 0
+    ? [...data].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    : [];
+
+  let cumulativeBotol = 0;
+  let cumulativeGelas = 0;
+
+  const chartData = sortedData.length > 0 
+    ? sortedData.map(d => {
+        cumulativeBotol += d.botolWeight;
+        cumulativeGelas += d.gelasWeight;
+        return {
+          date: new Date(d.date).toLocaleDateString("id-ID", { day: "numeric", month: "short" }),
+          "Botol Plastik (kg)": parseFloat(cumulativeBotol.toFixed(1)),
+          "Gelas Plastik (kg)": parseFloat(cumulativeGelas.toFixed(1)),
+        };
+      })
     : [
         { date: "Senin", "Botol Plastik (kg)": 12, "Gelas Plastik (kg)": 8 },
-        { date: "Selasa", "Botol Plastik (kg)": 15, "Gelas Plastik (kg)": 10 },
-        { date: "Rabu", "Botol Plastik (kg)": 18, "Gelas Plastik (kg)": 14 },
-        { date: "Kamis", "Botol Plastik (kg)": 22, "Gelas Plastik (kg)": 19 },
-        { date: "Jumat", "Botol Plastik (kg)": 28, "Gelas Plastik (kg)": 25 },
+        { date: "Selasa", "Botol Plastik (kg)": 27, "Gelas Plastik (kg)": 18 },
+        { date: "Rabu", "Botol Plastik (kg)": 45, "Gelas Plastik (kg)": 32 },
+        { date: "Kamis", "Botol Plastik (kg)": 67, "Gelas Plastik (kg)": 51 },
+        { date: "Jumat", "Botol Plastik (kg)": 95, "Gelas Plastik (kg)": 76 },
       ];
 
   return (
     <div className="h-[300px] w-full mt-4">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart
+        <LineChart
           data={chartData}
           margin={{
             top: 20,
@@ -65,9 +76,23 @@ export function AdminCharts({ data }: AdminChartsProps) {
             }} 
           />
           <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "10px" }} />
-          <Bar dataKey="Botol Plastik (kg)" fill="#10b981" radius={[4, 4, 0, 0]} />
-          <Bar dataKey="Gelas Plastik (kg)" fill="#3b82f6" radius={[4, 4, 0, 0]} />
-        </BarChart>
+          <Line 
+            type="monotone" 
+            dataKey="Botol Plastik (kg)" 
+            stroke="#10b981" 
+            strokeWidth={3} 
+            dot={{ r: 3 }}
+            activeDot={{ r: 6 }} 
+          />
+          <Line 
+            type="monotone" 
+            dataKey="Gelas Plastik (kg)" 
+            stroke="#3b82f6" 
+            strokeWidth={3} 
+            dot={{ r: 3 }}
+            activeDot={{ r: 6 }} 
+          />
+        </LineChart>
       </ResponsiveContainer>
     </div>
   );

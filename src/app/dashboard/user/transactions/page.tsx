@@ -19,12 +19,16 @@ export default async function UserTransactionsPage() {
   const formattedTxs = transactions.map((t: any) => ({
     id: t.id,
     date: t.createdAt.toISOString(),
-    wasteTypeName: t.pickupRequest?.wasteType?.name || "Sampah Plastik",
+    customerName: t.user?.name || session.user.name || "Nasabah",
+    customerId: t.userId,
+    wasteTypeName: t.pickupRequest?.wasteType?.name || t.wasteTypeName || "Sampah Plastik",
+    estimatedWeight: t.pickupRequest?.estimatedWeight ?? parseFloat((t.weight * 0.9).toFixed(1)),
     weight: t.weight,
     pricePerKg: t.pricePerKg,
     totalPrice: t.totalPrice,
     pointsEarned: t.pointsEarned,
-    staffName: t.staff?.name || "Staff Lapangan",
+    staffName: t.staff?.name || t.staffName || "Staff Lapangan",
+    status: t.pickupRequest?.status || "COMPLETED",
   }));
 
   return (

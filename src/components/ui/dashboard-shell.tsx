@@ -70,6 +70,7 @@ export function DashboardShell({ children, user }: DashboardShellProps) {
       case "STAFF":
         return [
           { label: "Daftar Tugas", href: "/dashboard/staff", icon: ClipboardList },
+          { label: "Riwayat Penjemputan", href: "/dashboard/staff/history", icon: History },
         ];
       case "USER":
       default:

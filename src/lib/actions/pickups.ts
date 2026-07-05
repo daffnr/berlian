@@ -24,6 +24,7 @@ export async function getPickups() {
           user: true,
           wasteType: true,
           staff: true,
+          transactions: true,
         },
         orderBy: { createdAt: "desc" },
       });
@@ -40,6 +41,7 @@ export async function getPickupsByUserId(userId: string) {
         include: {
           wasteType: true,
           staff: true,
+          transactions: true,
         },
         orderBy: { createdAt: "desc" },
       });
@@ -56,6 +58,7 @@ export async function getPickupsByStaffId(staffId: string) {
         include: {
           user: true,
           wasteType: true,
+          transactions: true,
         },
         orderBy: { createdAt: "desc" },
       });
@@ -73,6 +76,7 @@ export async function getPickupById(id: string) {
           user: true,
           wasteType: true,
           staff: true,
+          transactions: true,
         },
       });
     },

@@ -19,6 +19,7 @@ interface PickupItem {
   user?: { name: string; phone: string | null };
   wasteType?: { name: string };
   staff?: { name: string } | null;
+  transactions?: { weight: number }[] | null;
   // Fallbacks untuk dummy data structure
   userName?: string;
   wasteTypeName?: string;
@@ -243,7 +244,20 @@ export function PickupsClient({ pickups, staffMembers, adminId }: PickupsClientP
             <div className="flex flex-col gap-1.5 text-slate-655 dark:text-zinc-350 bg-white dark:bg-zinc-950/20 p-3 rounded-xl border border-slate-100 dark:border-zinc-850">
               <div className="flex justify-between items-center font-bold text-slate-800 dark:text-zinc-200 border-b border-slate-50 dark:border-zinc-850 pb-1.5">
                 <span>{p.wasteType?.name || p.wasteTypeName}</span>
-                <span>Estimasi: {p.estimatedWeight} kg</span>
+                <div className="flex flex-col items-end text-right">
+                  {p.status === "COMPLETED" && p.transactions?.[0] ? (
+                    <>
+                      <span className="text-xs font-extrabold text-emerald-600 dark:text-emerald-400">
+                        ⚖️ Berat Aktual: {p.transactions[0].weight} kg
+                      </span>
+                      <span className="text-[10px] font-normal text-slate-400">
+                        Estimasi: {p.estimatedWeight} kg
+                      </span>
+                    </>
+                  ) : (
+                    <span>Estimasi: {p.estimatedWeight} kg</span>
+                  )}
+                </div>
               </div>
               
               <div className="flex items-start gap-1.5 mt-1.5">
@@ -290,7 +304,7 @@ export function PickupsClient({ pickups, staffMembers, adminId }: PickupsClientP
                       placeholder="Masukkan berat aktual (kg)..."
                       value={actualWeight}
                       onChange={(e) => setActualWeight(e.target.value)}
-                      className="bg-white dark:bg-zinc-850 border border-slate-200 dark:border-zinc-700 rounded-xl px-3 py-1.5 text-xs text-slate-800 dark:text-white focus:outline-none w-full"
+                      className="bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-xl px-3 py-1.5 text-xs text-black dark:text-white focus:outline-none w-full"
                     />
                     <button
                       onClick={() => handleWeighComplete(p.id)}

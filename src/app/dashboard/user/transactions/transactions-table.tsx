@@ -6,12 +6,16 @@ import { Search, ChevronLeft, ChevronRight, History } from "lucide-react";
 interface TransactionItem {
   id: string;
   date: string;
+  customerName: string;
+  customerId: string;
   wasteTypeName: string;
+  estimatedWeight: number;
   weight: number;
   pricePerKg: number;
   totalPrice: number;
   pointsEarned: number;
   staffName: string;
+  status: string;
 }
 
 interface TransactionsTableProps {
@@ -58,7 +62,7 @@ export function TransactionsTable({ data }: TransactionsTableProps) {
           placeholder="Cari jenis sampah atau petugas..."
           value={searchQuery}
           onChange={handleSearchChange}
-          className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+          className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-slate-200 bg-slate-50 text-black dark:text-zinc-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-800 dark:focus:bg-zinc-700"
         />
       </div>
 
@@ -67,35 +71,56 @@ export function TransactionsTable({ data }: TransactionsTableProps) {
         <table className="w-full text-left border-collapse text-xs sm:text-sm">
           <thead>
             <tr className="border-b border-slate-100 bg-slate-50 font-semibold text-slate-550 uppercase tracking-wider dark:border-zinc-850 dark:bg-zinc-900/50 dark:text-zinc-400">
-              <th className="p-4">Tanggal</th>
+              <th className="p-4">Tanggal & Waktu</th>
+              <th className="p-4">ID & Nasabah</th>
               <th className="p-4">Jenis Sampah</th>
-              <th className="p-4 text-right">Berat</th>
+              <th className="p-4 text-right">Estimasi</th>
+              <th className="p-4 text-right">Timbangan Aktual</th>
               <th className="p-4 text-right">Harga/kg</th>
-              <th className="p-4 text-right">Total Pendapatan</th>
-              <th className="p-4 text-right">Poin</th>
-              <th className="p-4">Petugas</th>
+              <th className="p-4 text-right">Total Transaksi</th>
+              <th className="p-4 text-center">Status</th>
+              <th className="p-4">Diproses Oleh</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 dark:divide-zinc-850">
             {paginatedData.map((item) => (
-              <tr key={item.id} className="hover:bg-slate-50/50 dark:hover:bg-zinc-900/20 transition-colors">
+              <tr key={item.id} className="hover:bg-slate-50/50 dark:hover:bg-zinc-900/20 transition-colors text-xs">
                 <td className="p-4 font-medium text-slate-700 dark:text-zinc-300">
-                  {new Date(item.date).toLocaleDateString("id-ID", {
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  })}
+                  <div className="flex flex-col">
+                    <span>
+                      {new Date(item.date).toLocaleDateString("id-ID", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span className="text-[10px] text-slate-400">
+                      {new Date(item.date).toLocaleTimeString("id-ID", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })} WIB
+                    </span>
+                  </div>
+                </td>
+                <td className="p-4">
+                  <div className="flex flex-col">
+                    <span className="font-bold text-slate-800 dark:text-zinc-200">{item.customerName}</span>
+                    <span className="text-[9px] text-slate-400 font-mono">{item.customerId}</span>
+                  </div>
                 </td>
                 <td className="p-4 font-bold">{item.wasteTypeName}</td>
-                <td className="p-4 text-right font-semibold">{item.weight} kg</td>
-                <td className="p-4 text-right text-slate-500 dark:text-zinc-400">
+                <td className="p-4 text-right font-medium text-slate-500 dark:text-zinc-400">{item.estimatedWeight} kg</td>
+                <td className="p-4 text-right font-extrabold text-slate-900 dark:text-white">{item.weight} kg</td>
+                <td className="p-4 text-right text-slate-550 dark:text-zinc-400">
                   Rp{item.pricePerKg.toLocaleString("id-ID")}
                 </td>
                 <td className="p-4 text-right font-extrabold text-emerald-600 dark:text-emerald-400">
                   Rp{item.totalPrice.toLocaleString("id-ID")}
                 </td>
-                <td className="p-4 text-right font-semibold text-yellow-600 dark:text-yellow-400">
-                  +{item.pointsEarned} Poin
+                <td className="p-4 text-center">
+                  <span className="px-2 py-0.5 rounded-full border text-[9px] font-bold bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-900">
+                    Selesai
+                  </span>
                 </td>
                 <td className="p-4 text-slate-655 dark:text-zinc-400 font-medium">{item.staffName}</td>
               </tr>

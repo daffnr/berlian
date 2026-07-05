@@ -26,8 +26,8 @@ export default async function AdminDashboardPage() {
   const totalPayout = transactions.reduce((acc: number, curr: any) => acc + curr.totalPrice, 0);
   const pendingRequests = pickups.filter((p: any) => p.status === "PENDING").length;
 
-  // Siapkan data grafik harian (kelompokkan 7 transaksi terakhir)
-  const chartData = transactions.slice(0, 10).map((t: any) => {
+  // Siapkan data grafik harian (seluruh riwayat untuk akumulasi)
+  const chartData = transactions.map((t: any) => {
     const isBotol = (t.pickupRequest?.wasteType?.name || t.wasteTypeName || "").toLowerCase().includes("botol");
     return {
       date: t.createdAt.toISOString(),

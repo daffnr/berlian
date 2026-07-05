@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 interface ChartDataPoint {
   date: string;
@@ -13,24 +13,33 @@ interface UserChartsProps {
 }
 
 export function UserCharts({ data }: UserChartsProps) {
-  // Fallback data jika belum ada transaksi
-  const chartData = data.length > 0 
-    ? [...data].reverse().map(d => ({
-        date: new Date(d.date).toLocaleDateString("id-ID", { day: "numeric", month: "short" }),
-        "Berat Sampah (kg)": d.weight
-      }))
+  // Urutkan data secara kronologis untuk menghitung akumulasi sum secara berurutan
+  const sortedData = data.length > 0
+    ? [...data].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    : [];
+
+  let cumulativeWeight = 0;
+
+  const chartData = sortedData.length > 0 
+    ? sortedData.map(d => {
+        cumulativeWeight += d.weight;
+        return {
+          date: new Date(d.date).toLocaleDateString("id-ID", { day: "numeric", month: "short" }),
+          "Total Sampah (kg)": parseFloat(cumulativeWeight.toFixed(1))
+        };
+      })
     : [
-        { date: "Senin", "Berat Sampah (kg)": 0 },
-        { date: "Selasa", "Berat Sampah (kg)": 0 },
-        { date: "Rabu", "Berat Sampah (kg)": 0 },
-        { date: "Kamis", "Berat Sampah (kg)": 0 },
-        { date: "Jumat", "Berat Sampah (kg)": 0 },
+        { date: "Senin", "Total Sampah (kg)": 5 },
+        { date: "Selasa", "Total Sampah (kg)": 12 },
+        { date: "Rabu", "Total Sampah (kg)": 22 },
+        { date: "Kamis", "Total Sampah (kg)": 35 },
+        { date: "Jumat", "Total Sampah (kg)": 50 },
       ];
 
   return (
     <div className="h-[250px] w-full mt-4">
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart
+        <LineChart
           data={chartData}
           margin={{
             top: 10,
@@ -39,12 +48,6 @@ export function UserCharts({ data }: UserChartsProps) {
             bottom: 0,
           }}
         >
-          <defs>
-            <linearGradient id="colorWeight" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#10b981" stopOpacity={0.2}/>
-              <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-            </linearGradient>
-          </defs>
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
           <XAxis 
             dataKey="date" 
@@ -68,15 +71,15 @@ export function UserCharts({ data }: UserChartsProps) {
               fontSize: "12px"
             }} 
           />
-          <Area 
+          <Line 
             type="monotone" 
-            dataKey="Berat Sampah (kg)" 
+            dataKey="Total Sampah (kg)" 
             stroke="#10b981" 
-            strokeWidth={2}
-            fillOpacity={1} 
-            fill="url(#colorWeight)" 
+            strokeWidth={3} 
+            dot={{ r: 3 }}
+            activeDot={{ r: 6 }} 
           />
-        </AreaChart>
+        </LineChart>
       </ResponsiveContainer>
     </div>
   );

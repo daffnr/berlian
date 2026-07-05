@@ -22,10 +22,52 @@ export async function getUsers() {
   return runWithFallback<any>(
     async () => {
       return await db.user.findMany({
+        include: {
+          transactions: {
+            include: {
+              staff: true,
+              pickupRequest: {
+                include: {
+                  wasteType: true,
+                },
+              },
+            },
+            orderBy: { createdAt: "desc" },
+          },
+        },
         orderBy: { createdAt: "desc" },
       });
     },
-    () => dummyActions.getUsers()
+    () => {
+      return dummyActions.getUsers().map((u) => {
+        const txs = dummyActions.getTransactions()
+          .filter((t) => t.userId === u.id)
+          .map((t) => {
+            const associatedPickup = dummyActions.getPickups().find((p) => p.id === t.pickupRequestId);
+            return {
+              id: t.id,
+              pickupRequestId: t.pickupRequestId,
+              userId: t.userId,
+              staffId: t.staffId,
+              weight: t.weight,
+              pricePerKg: t.pricePerKg,
+              totalPrice: t.totalPrice,
+              pointsEarned: t.pointsEarned,
+              createdAt: t.createdAt,
+              staff: { name: t.staffName },
+              pickupRequest: {
+                wasteType: { name: t.wasteTypeName },
+                estimatedWeight: associatedPickup ? associatedPickup.estimatedWeight : t.weight * 0.9,
+                status: associatedPickup ? associatedPickup.status : "COMPLETED",
+              },
+            };
+          });
+        return {
+          ...u,
+          transactions: txs,
+        };
+      });
+    }
   );
 }
 

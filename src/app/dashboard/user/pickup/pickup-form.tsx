@@ -119,7 +119,7 @@ export function PickupForm({ userId, wasteTypes, defaultAddress, defaultPhone }:
         <label className="text-xs font-semibold text-slate-700 dark:text-zinc-300">Jenis Sampah</label>
         <select
           {...register("wasteTypeId")}
-          className="w-full bg-slate-50 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white"
+          className="w-full bg-slate-50 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-black dark:text-white"
         >
           {wasteTypes.map((type) => (
             <option key={type.id} value={type.id}>
@@ -140,7 +140,7 @@ export function PickupForm({ userId, wasteTypes, defaultAddress, defaultPhone }:
           step="0.1"
           placeholder="5.0"
           {...register("estimatedWeight")}
-          className={`w-full bg-slate-50 dark:bg-zinc-800 border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition-all ${
+          className={`w-full bg-slate-50 dark:bg-zinc-800 border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-black dark:text-white transition-all ${
             errors.estimatedWeight ? "border-rose-500" : "border-slate-200 dark:border-zinc-700"
           }`}
         />
@@ -156,7 +156,7 @@ export function PickupForm({ userId, wasteTypes, defaultAddress, defaultPhone }:
           type="text"
           placeholder="Contoh: 087785349292"
           {...register("waNumber")}
-          className={`w-full bg-slate-50 dark:bg-zinc-800 border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition-all ${
+          className={`w-full bg-slate-50 dark:bg-zinc-800 border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-black dark:text-white transition-all ${
             errors.waNumber ? "border-rose-500" : "border-slate-200 dark:border-zinc-700"
           }`}
         />
@@ -172,7 +172,7 @@ export function PickupForm({ userId, wasteTypes, defaultAddress, defaultPhone }:
           rows={3}
           placeholder="Masukkan detail alamat penjemputan"
           {...register("address")}
-          className={`w-full bg-slate-50 dark:bg-zinc-800 border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition-all resize-none ${
+          className={`w-full bg-slate-50 dark:bg-zinc-800 border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-black dark:text-white transition-all resize-none ${
             errors.address ? "border-rose-500" : "border-slate-200 dark:border-zinc-700"
           }`}
         />
@@ -188,7 +188,7 @@ export function PickupForm({ userId, wasteTypes, defaultAddress, defaultPhone }:
           type="text"
           placeholder="Contoh: Jemput di lobi depan, kabari via telp."
           {...register("description")}
-          className="w-full bg-slate-50 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white"
+          className="w-full bg-slate-50 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-black dark:text-white"
         />
       </div>
 

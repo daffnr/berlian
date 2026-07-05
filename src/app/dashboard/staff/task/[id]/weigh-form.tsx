@@ -22,7 +22,12 @@ interface WeighFormProps {
   pricePerKg: number;
 }
 
-export function WeighForm({ pickupId, staffId, wasteTypeName, pricePerKg }: WeighFormProps) {
+export function WeighForm({
+  pickupId,
+  staffId,
+  wasteTypeName,
+  pricePerKg,
+}: WeighFormProps) {
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -77,7 +82,7 @@ export function WeighForm({ pickupId, staffId, wasteTypeName, pricePerKg }: Weig
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       {/* Input Berat Timbangan */}
       <div className="flex flex-col gap-1">
-        <label className="text-xs font-semibold text-slate-700 dark:text-zinc-300">
+        <label className="text-xs font-semibold  text-black">
           Masukkan Berat Aktual (kg)
         </label>
         <input
@@ -85,12 +90,16 @@ export function WeighForm({ pickupId, staffId, wasteTypeName, pricePerKg }: Weig
           step="0.1"
           placeholder="0.0"
           {...register("weight", { onChange: handleWeightChange })}
-          className={`w-full bg-slate-50 dark:bg-zinc-800 border rounded-xl px-4 py-3 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white transition-all ${
-            errors.weight ? "border-rose-500" : "border-slate-200 dark:border-zinc-700"
+          className={`w-full bg-slate-50 dark:bg-zinc-800 border rounded-xl px-4 py-3 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white transition-all ${
+            errors.weight
+              ? "border-rose-500"
+              : "border-slate-200 dark:border-zinc-700"
           }`}
         />
         {errors.weight && (
-          <span className="text-[10px] text-rose-500 font-semibold">{errors.weight.message as any}</span>
+          <span className="text-[10px] text-rose-500 font-semibold">
+            {errors.weight.message as any}
+          </span>
         )}
       </div>
 
@@ -98,22 +107,30 @@ export function WeighForm({ pickupId, staffId, wasteTypeName, pricePerKg }: Weig
       <div className="rounded-xl border border-slate-100 bg-white p-4 shadow-sm dark:border-zinc-850 dark:bg-zinc-900/50 flex flex-col gap-2.5 text-xs sm:text-sm">
         <div className="flex justify-between items-center text-slate-500 dark:text-zinc-400">
           <span>Harga Satuan ({wasteTypeName})</span>
-          <span className="font-semibold">Rp{pricePerKg.toLocaleString("id-ID")} / kg</span>
+          <span className="font-semibold">
+            Rp{pricePerKg.toLocaleString("id-ID")} / kg
+          </span>
         </div>
         <div className="flex justify-between items-center text-slate-500 dark:text-zinc-400">
           <span>Berat Terbaca</span>
-          <span className="font-bold text-slate-800 dark:text-zinc-250">{liveWeight} kg</span>
+          <span className="font-bold text-slate-800 dark:text-zinc-250">
+            {liveWeight} kg
+          </span>
         </div>
         <div className="h-px bg-slate-100 dark:bg-zinc-800" />
-        
+
         <div className="flex justify-between items-center">
-          <span className="font-semibold text-slate-700 dark:text-zinc-300">Total Kredit Saldo</span>
+          <span className="font-semibold text-slate-700 dark:text-zinc-300">
+            Total Kredit Saldo
+          </span>
           <span className="font-extrabold text-emerald-600 dark:text-emerald-400 text-base">
             Rp{calculatedBalance.toLocaleString("id-ID")}
           </span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="font-semibold text-slate-700 dark:text-zinc-300">Total Kredit Poin</span>
+          <span className="font-semibold text-slate-700 dark:text-zinc-300">
+            Total Kredit Poin
+          </span>
           <span className="font-bold text-yellow-600 dark:text-yellow-400">
             +{calculatedPoints} Poin
           </span>
@@ -128,7 +145,7 @@ export function WeighForm({ pickupId, staffId, wasteTypeName, pricePerKg }: Weig
         >
           Batal
         </button>
-        
+
         <button
           type="submit"
           disabled={isLoading || liveWeight <= 0}

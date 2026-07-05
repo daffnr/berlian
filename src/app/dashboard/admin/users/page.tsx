@@ -13,7 +13,12 @@ export default async function AdminUsersPage() {
   }
 
   const currentUserRole = (session.user as any).role;
-  const users = await getUsers();
+  let users = await getUsers();
+
+  // Admin Cabang dan Staff hanya boleh melihat data Nasabah (USER)
+  if (currentUserRole === "ADMIN" || currentUserRole === "STAFF") {
+    users = users.filter((u: any) => u.role === "USER");
+  }
 
   return (
     <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/50">
