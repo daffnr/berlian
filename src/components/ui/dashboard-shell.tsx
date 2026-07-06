@@ -23,6 +23,8 @@ import {
   ShieldCheck,
   FileText
 } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 interface SidebarLink {
   label: string;
@@ -92,41 +94,41 @@ export function DashboardShell({ children, user }: DashboardShellProps) {
     router.refresh();
   };
 
-  // Tentukan warna tema berdasarkan role
+  // Tentukan warna tema berdasarkan role (Diamond theme: Cyan, Turquoise, Sky, Indigo accents)
   const getRoleTheme = () => {
     switch (user.role) {
       case "SUPER_ADMIN":
         return {
-          bg: "bg-purple-650",
-          text: "text-purple-600 dark:text-purple-400",
-          border: "border-purple-100 dark:border-purple-900/50",
-          accent: "hover:bg-purple-50 hover:text-purple-900 dark:hover:bg-purple-950/20 dark:hover:text-purple-100",
-          active: "bg-purple-600 text-white shadow-md shadow-purple-500/20 dark:bg-purple-950 dark:text-purple-200 dark:border-purple-800 border-transparent",
+          bg: "bg-purple-500",
+          text: "text-purple-650 dark:text-purple-400",
+          border: "border-purple-100 dark:border-purple-950/50",
+          accent: "hover:bg-purple-50 dark:hover:bg-purple-950/20 hover:text-purple-900 dark:hover:text-purple-100",
+          active: "bg-gradient-to-r from-purple-600 to-cyan-500 text-white shadow-md shadow-purple-500/10 border-transparent",
         };
       case "ADMIN":
         return {
-          bg: "bg-indigo-650",
-          text: "text-indigo-600 dark:text-indigo-400",
-          border: "border-indigo-100 dark:border-indigo-900/50",
-          accent: "hover:bg-indigo-50 hover:text-indigo-900 dark:hover:bg-indigo-950/20 dark:hover:text-indigo-100",
-          active: "bg-indigo-600 text-white shadow-md shadow-indigo-500/20 dark:bg-indigo-950 dark:text-indigo-200 dark:border-indigo-800 border-transparent",
+          bg: "bg-indigo-500",
+          text: "text-indigo-650 dark:text-indigo-400",
+          border: "border-indigo-100 dark:border-indigo-950/50",
+          accent: "hover:bg-indigo-50 dark:hover:bg-indigo-950/20 hover:text-indigo-900 dark:hover:text-indigo-100",
+          active: "bg-gradient-to-r from-indigo-600 to-cyan-500 text-white shadow-md shadow-indigo-500/10 border-transparent",
         };
       case "STAFF":
         return {
-          bg: "bg-blue-650",
-          text: "text-blue-600 dark:text-blue-400",
-          border: "border-blue-100 dark:border-blue-900/50",
-          accent: "hover:bg-blue-50 hover:text-blue-900 dark:hover:bg-blue-950/20 dark:hover:text-blue-100",
-          active: "bg-blue-600 text-white shadow-md shadow-blue-500/20 dark:bg-blue-950 dark:text-blue-200 dark:border-blue-800 border-transparent",
+          bg: "bg-sky-500",
+          text: "text-sky-655 dark:text-sky-400",
+          border: "border-sky-100 dark:border-sky-955/50",
+          accent: "hover:bg-sky-50 dark:hover:bg-sky-950/20 hover:text-sky-900 dark:hover:text-sky-100",
+          active: "bg-gradient-to-r from-sky-600 to-blue-500 text-white shadow-md shadow-sky-500/10 border-transparent",
         };
       case "USER":
       default:
         return {
-          bg: "bg-emerald-650",
-          text: "text-emerald-600 dark:text-emerald-400",
-          border: "border-emerald-100 dark:border-emerald-900/50",
-          accent: "hover:bg-emerald-50 hover:text-emerald-900 dark:hover:bg-emerald-950/20 dark:hover:text-emerald-100",
-          active: "bg-emerald-600 text-white shadow-md shadow-emerald-500/20 dark:bg-emerald-950 dark:text-emerald-200 dark:border-emerald-800 border-transparent",
+          bg: "bg-cyan-555",
+          text: "text-cyan-600 dark:text-cyan-400",
+          border: "border-cyan-100 dark:border-cyan-950/50",
+          accent: "hover:bg-cyan-50 dark:hover:bg-cyan-950/20 hover:text-cyan-900 dark:hover:text-cyan-100",
+          active: "bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-md shadow-cyan-500/10 border-transparent",
         };
     }
   };
@@ -143,14 +145,12 @@ export function DashboardShell({ children, user }: DashboardShellProps) {
   };
 
   const SidebarContent = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-zinc-900 border-r border-slate-100 dark:border-zinc-800 w-64">
+    <div className="flex flex-col h-full bg-white dark:bg-zinc-900 border-r border-slate-100 dark:border-zinc-850 w-64">
       {/* Brand Header */}
-      <div className="flex items-center gap-2 px-6 h-16 border-b border-slate-100 dark:border-zinc-800 shrink-0">
-        <div className="rounded-lg bg-emerald-600 p-1.5 text-white">
-          <Recycle className="h-5 w-5" />
-        </div>
-        <span className="font-extrabold text-slate-900 dark:text-white tracking-tight">
-          BERLIAN<span className="text-emerald-600">V2</span>
+      <div className="flex items-center gap-2 px-6 h-16 border-b border-slate-100 dark:border-zinc-850 shrink-0">
+        <Logo className="h-8 w-8" />
+        <span className="font-black text-slate-800 dark:text-white tracking-wider text-base">
+          BERLIAN
         </span>
       </div>
 
@@ -194,14 +194,17 @@ export function DashboardShell({ children, user }: DashboardShellProps) {
       </nav>
 
       {/* Logout Footer */}
-      <div className="p-4 border-t border-slate-100 dark:border-zinc-800 shrink-0">
+      <div className="p-4 border-t border-slate-100 dark:border-zinc-800 shrink-0 flex items-center justify-between gap-2">
         <button
           onClick={handleLogout}
-          className="flex w-full items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 hover:text-rose-900 border border-transparent dark:text-rose-450 dark:hover:bg-rose-950/20 dark:hover:text-rose-100 transition-colors"
+          className="flex-1 flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 hover:text-rose-900 border border-transparent dark:text-rose-450 dark:hover:bg-rose-950/20 dark:hover:text-rose-100 transition-colors"
         >
           <LogOut className="h-4.5 w-4.5" />
           <span>Keluar</span>
         </button>
+        <div className="lg:hidden">
+          <ThemeToggle />
+        </div>
       </div>
     </div>
   );
@@ -254,6 +257,9 @@ export function DashboardShell({ children, user }: DashboardShellProps) {
           </div>
 
           <div className="flex items-center gap-3">
+            <div className="hidden lg:block">
+              <ThemeToggle />
+            </div>
             <span className="text-[10px] bg-slate-100 text-slate-655 dark:bg-zinc-800 dark:text-zinc-300 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
               {getRoleLabel()}
             </span>

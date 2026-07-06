@@ -8,7 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { signIn } from "next-auth/react";
 import { useToast } from "@/components/ui/toast";
-import { Recycle, ArrowRight, Loader2, Eye, EyeOff } from "lucide-react";
+import { ArrowRight, Loader2, Eye, EyeOff } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 
 const loginSchema = z.object({
   email: z.string().min(1, "Email wajib diisi").email("Format email tidak valid"),
@@ -75,18 +76,12 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-zinc-950 px-4 sm:px-6 relative overflow-hidden">
-      {/* Background gradients */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="w-full max-w-md bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800 rounded-2xl shadow-xl p-8 relative backdrop-blur-md">
+
+      <div className="w-full max-w-md bg-white dark:bg-zinc-900 border border-slate-150 dark:border-zinc-800 rounded-2xl shadow-xl p-8 relative backdrop-blur-md">
         <div className="flex flex-col items-center mb-8">
-          <Link href="/" className="flex items-center gap-2 mb-4">
-            <div className="rounded-xl bg-emerald-600 p-2 text-white">
-              <Recycle className="h-6 w-6" />
-            </div>
-            <span className="text-xl font-bold tracking-tight dark:text-white">
-              BERLIAN<span className="text-emerald-600">V2</span>
-            </span>
+          <Link href="/" className="mb-4">
+            <Logo className="h-8 w-8" showText={true} />
           </Link>
           <h2 className="text-xl font-bold dark:text-white">Masuk sebagai Nasabah</h2>
           <p className="text-xs text-slate-550 dark:text-zinc-400 mt-1">
@@ -101,8 +96,8 @@ export default function LoginPage() {
               type="email"
               placeholder="nama@email.com"
               {...register("email")}
-              className={`w-full bg-slate-50 dark:bg-zinc-800 border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition-all ${
-                errors.email ? "border-rose-500" : "border-slate-200 dark:border-zinc-700"
+              className={`w-full bg-slate-50 dark:bg-zinc-800 border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 text-black dark:text-white transition-all ${
+                errors.email ? "border-rose-500" : "border-slate-250 dark:border-zinc-700"
               }`}
             />
             {errors.email && (
@@ -117,8 +112,8 @@ export default function LoginPage() {
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••"
                 {...register("password")}
-                className={`w-full bg-slate-50 dark:bg-zinc-800 border rounded-xl pl-4 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition-all ${
-                  errors.password ? "border-rose-500" : "border-slate-200 dark:border-zinc-700"
+                className={`w-full bg-slate-50 dark:bg-zinc-800 border rounded-xl pl-4 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 text-black dark:text-white transition-all ${
+                  errors.password ? "border-rose-500" : "border-slate-250 dark:border-zinc-700"
                 }`}
               />
               <button
@@ -137,7 +132,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-emerald-500/10 disabled:opacity-50 mt-2 hover:scale-[1.01]"
+            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-teal-500 hover:opacity-95 text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-cyan-500/10 disabled:opacity-50 mt-2 hover:scale-[1.01]"
           >
             {isLoading ? (
               <Loader2 className="h-5 w-5 animate-spin" />
@@ -150,9 +145,9 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="mt-6 text-center text-xs text-slate-500 dark:text-zinc-400">
+        <div className="mt-6 text-center text-xs text-slate-555 dark:text-zinc-400">
           Belum terdaftar sebagai nasabah?{" "}
-          <Link href="/register" className="text-emerald-600 hover:underline font-semibold dark:text-emerald-400">
+          <Link href="/register" className="text-cyan-600 hover:underline font-semibold dark:text-cyan-400">
             Daftar Di Sini
           </Link>
         </div>

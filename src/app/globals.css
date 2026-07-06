@@ -1,26 +1,72 @@
 @import "tailwindcss";
 
+/* 1. Mendaftarkan custom variant dark untuk class-based dark mode di Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 2. Custom theme variables */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafcfd; /* Off-white yang cerah dan bersih */
+  --foreground: #0f172a; /* Slate 900 */
 }
 
-@theme inline {
+.dark {
+  --background: #060a13; /* Navy/Cyan gelap bertema berlian premium */
+  --foreground: #f8fafc; /* Slate 50 */
+}
+
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* 3. Global transitions & base element styles */
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.15s ease;
+}
+
+/* Diamond pattern & premium elements */
+.bg-diamond-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(45deg, rgba(34, 211, 238, 0.02) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(34, 211, 238, 0.02) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(34, 211, 238, 0.02) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(34, 211, 238, 0.02) 75%);
+}
+
+.dark .bg-diamond-pattern {
+  background-image: 
+    linear-gradient(45deg, rgba(34, 211, 238, 0.015) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(34, 211, 238, 0.015) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(34, 211, 238, 0.015) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(34, 211, 238, 0.015) 75%);
+}
+
+.glass-card {
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.dark .glass-card {
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(51, 65, 85, 0.5);
+}
+
+/* Micro-animations */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.animate-spin-slow {
+  animation: spin-slow 15s linear infinite;
 }
